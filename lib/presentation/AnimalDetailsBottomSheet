@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:pet_finder/data/model/AnimalDTO.dart';
+
+class AnimalDetailsBottomSheet extends StatelessWidget {
+ 
+  final AnimalDTO animal;
+ 
+  const AnimalDetailsBottomSheet({Key? key, required this.animal}) : super(key: key);
+ 
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            animal.name,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold
+            )
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${animal.name}',
+            style: const TextStyle(fontSize: 18, color: Colors.grey),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Description:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'This is a detailed description of ${animal.name}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            style: const TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 20),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Slose')
+            )
+          )
+        ],
+      )
+     
+    );
+  }
+ 
+}
