@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel;
+import 'package:carousel_slider/carousel_controller.dart' as carousel;
 import 'package:pet_finder/data/model/AnimalDTO.dart';
 
-class DetailScreen extends StatelessWidget {
+class AnimalDetailScreen extends StatelessWidget {
   final AnimalDTO animal;
+  
 
-  const DetailScreen({
+  void onFavouritePressed() {
+
+  }
+
+  const AnimalDetailScreen({
     Key? key,
     required this.animal,
   }) : super(key: key);
@@ -20,7 +26,7 @@ class DetailScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.favorite_border),
             onPressed: () {
-              // Dodaj do ulubionych
+              onFavouritePressed;
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Dodano do ulubionych!')),
               );
@@ -34,25 +40,28 @@ class DetailScreen extends StatelessWidget {
           children: [
             // Karuzela ze zdjęciami
             if (animal.photos.isNotEmpty)
-              CarouselSlider(
-                options: CarouselOptions(
+              carousel.CarouselSlider(
+                options: carousel.CarouselOptions(
                   height: 300,
                   autoPlay: true,
                   enlargeCenterPage: true,
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 1 / 1,
                   viewportFraction: 1.0,
                 ),
                 items: animal.photos.map((url) {
                   return Builder(
                     builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: NetworkImage(url as String),
-                            fit: BoxFit.cover,
+                      return Hero(
+                        tag: 'img-${url.small}',
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: NetworkImage(url.small!),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       );

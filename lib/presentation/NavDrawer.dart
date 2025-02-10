@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
@@ -11,19 +12,27 @@ class NavDrawer extends StatelessWidget {
         child: Text('Pet Finder'),
       ),
       ListTile(
-        onTap: () {},
+        onTap: () {
+          //context.push('/');
+        },
         title: Text('Favourites'),
       ),
       ListTile(
-        onTap: () {},
+        onTap: () {
+          context.push('/');
+        },
         title: Text('All'),
       ),
       ListTile(
-        onTap: () {},
+        onTap: () {
+          context.push('/cats');
+        },
         title: Text('Cats'),
       ),
       ListTile(
-        onTap: () {},
+        onTap: () {
+          context.push('/dogs');
+        },
         title: Text('Dogs'),
       ),
       ListTile(

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pet_finder/data/AnimalResponse.dart';
 import 'package:pet_finder/data/PetApi.dart';
 import 'package:pet_finder/presentation/AnimalCard.dart';
 import 'package:pet_finder/presentation/AnimalDetailsBottomSheet';
 import 'package:pet_finder/presentation/NavDrawer.dart';
 
-
-
 class AnimalListScreen extends StatefulWidget {
   final String title;
+  final CallDetails callDetails;
 
   const AnimalListScreen({
     super.key,
     required this.title,
+    required this.callDetails
   });
 
   @override
@@ -34,7 +35,7 @@ class _AnimalListScreen extends State<AnimalListScreen> {
   void loadAnimals() async {
     try {
       setState(() {
-        futureAnimals = fetchAnimals();
+        futureAnimals = buildCall(widget.callDetails);
       });
     } catch (e) {
       print('error $e');
@@ -69,11 +70,7 @@ class _AnimalListScreen extends State<AnimalListScreen> {
                         print(animal.name);
                       },
                       onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return AnimalDetailsBottomSheet(animal: animal);
-                            });
+                        context.push('/details', extra: animal);
                       },
                     );
                   },

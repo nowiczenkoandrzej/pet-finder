@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Breeds {
   final String? primary;
   final String? secondary;
@@ -18,5 +20,16 @@ class Breeds {
       mixed: json['mixed'],
       unknown: json['unknown'],
     );
+  }
+
+  @override
+  String toString() {
+    if (unknown != null && unknown == true) {
+      return 'Breed unknown';
+    }
+
+    final mixedText = mixed == true ? 'mixed: ' : '';
+
+    return 'Breeds: $mixedText ${primary ?? ''}, ${secondary ?? ''}';
   }
 }

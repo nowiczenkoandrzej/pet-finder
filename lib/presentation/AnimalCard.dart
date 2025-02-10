@@ -16,10 +16,10 @@ class AnimalLCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? imgUrl = (animal.primaryPhotoCropped == null ||
-            animal.primaryPhotoCropped?.medium == null)
+    String? imgUrl = (animal.photos.isEmpty ||
+            animal.photos[0].small == null)
         ? null
-        : animal.primaryPhotoCropped?.medium!;
+        : animal.photos[0].small!;
 
 
     return InkWell(
@@ -45,13 +45,16 @@ class AnimalLCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: imgUrl != null
-                      ? Image.network(
-                          imgUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return _buildPlaceholder();
-                          },
-                        )
+                      ? Hero(
+                          tag: 'img-$imgUrl',
+                          child: Image.network(
+                            imgUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return _buildPlaceholder();
+                            },
+                          ),
+                      )
                       : _buildPlaceholder(),
                 )),
             const SizedBox(height: 8),
@@ -81,7 +84,12 @@ class AnimalLCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: IconButton(
                 icon: const Icon(Icons.favorite_border),
-                onPressed: onFavouritePressed,
+                onPressed: () {
+                  onFavouritePressed;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Dodano do ulubionych!')),
+                  );
+                },
               ),
             ),
           ]),

@@ -6,7 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 String? access_token;
 
 Future getPetfinderToken() async {
-  
   await dotenv.load(fileName: ".env");
 
   final clientId = dotenv.env['CLIENT_ID'];
@@ -48,3 +47,44 @@ Future<AnimalsResponse> fetchAnimals() async {
     throw Exception('Failed to load animals');
   }
 }
+
+Future<AnimalsResponse> buildCall(CallDetails details) async {
+  if (access_token == null) {
+    await getPetfinderToken();
+  }
+
+  final type = switch (details.type) {
+    AnimalType.ALL => '',
+    AnimalType.CAT => 'type=cat&',
+    AnimalType.DOG => 'type=dog&',
+    _ => ''
+  };
+
+  final response = await http.get(
+    Uri.parse('https://api.petfinder.com/v2/animals?${type}page=${details.page}'),
+    headers: {
+      'Authorization': 'Bearer $access_token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var result = AnimalsResponse.fromJson(json.decode(response.body));
+
+    return result;
+  } else {
+    throw Exception('Failed to load animals');
+  }
+}
+
+class CallDetails {
+  final int page;
+  final AnimalType type;
+
+  const CallDetails({
+    required this.page,
+    required this.type
+  });
+
+}
+
+enum AnimalType { DOG, CAT, ALL }
