@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pet_finder/data/AnimalResponse.dart';
-
-final String clientId = '34J0FU7kajEr8ynDKd8fHBuOWtw6cCTGvLnMfXLcthkAer0Wum';
-final String clientSecret = 'sitvbYFgpDNOYkmfgi4rySgYaPn0ZTgMf47TyCk1';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 String? access_token;
 
-
 Future getPetfinderToken() async {
+  
+  await dotenv.load(fileName: ".env");
+
+  final clientId = dotenv.env['CLIENT_ID'];
+  final clientSecret = dotenv.env['CLIENT_SECRET'];
   final response = await http.post(
     Uri.parse('https://api.petfinder.com/v2/oauth2/token'),
     body: {

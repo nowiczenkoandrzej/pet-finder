@@ -9,15 +9,15 @@ import 'package:pet_finder/data/model/Video.dart';
 
 class AnimalDTO {
   final int id;
-  final String? organizationId;
-  final String? url;
-  final String? type;
-  final String? species;
-  final Breeds? breeds;
+  final String organizationId;
+  final String url;
+  final String type;
+  final String species;
+  final Breeds breeds;
   final PetColors? colors;
-  final String? age;
-  final String? gender;
-  final String? size;
+  final String age;
+  final String gender;
+  final String size;
   final String? coat;
   final Attributes? attributes;
   final Environment? environment;
@@ -25,10 +25,10 @@ class AnimalDTO {
   final String name;
   final String? description;
   final String? organizationAnimalId;
-  final List<Photo>? photos;
+  final List<Photo> photos;
   final Photo? primaryPhotoCropped;
   final List<Video>? videos;
-  final String? status;
+  final String status;
   final String? statusChangedAt;
   final String? publishedAt;
   final double? distance;
