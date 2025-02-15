@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pet_finder/data/OrganizationResponse.dart';
+import 'package:pet_finder/data/PetApi.dart'; 
+import 'package:pet_finder/data/model/Organization.dart';  
+import 'package:pet_finder/presentation/components/OrganizationCard.dart';
+import 'package:pet_finder/presentation/components/NavDrawer.dart'; 
+
+class OrganizationListScreen extends StatefulWidget {
+
+
+  const OrganizationListScreen({
+    super.key,
+
+  });
+
+  @override
+  State<OrganizationListScreen> createState() => _OrganizationListScreenState();
+}
+
+class _OrganizationListScreenState extends State<OrganizationListScreen> {
+  Future<OrganizationResponse>? futureOrganizations;
+  bool isLoading = false;
+  List<Organization> organizations = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadOrganizations();
+    });
+  }
+
+
+  void loadOrganizations() async {
+    if (isLoading) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      
+
+      var response = await fetchOrganizations(); // Pobierz dane z API
+
+      print(response);
+      setState(() {
+        organizations = response.organizations;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Organizations'),
+      ),
+      drawer: const NavDrawer(),
+      body: isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : ListView.builder(
+          itemCount: organizations.length,
+          itemBuilder: (context, index) {
+            var organization = organizations[index];
+            if(isLoading) {
+              return CircularProgressIndicator();
+            } else {
+              return OrganizationCard(
+                organization: organization,
+                onFavouritePressed: () {
+                  print('Favourite: ${organization.name}');
+                },
+                onTap: () {
+                  context.push('/organizationDetails', extra: organization);
+                },
+              );
+            }
+            
+          },
+      ),
+    );
+  }
+}

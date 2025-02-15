@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pet_finder/data/AnimalResponse.dart';
 import 'package:pet_finder/data/PetApi.dart';
 import 'package:pet_finder/data/model/AnimalDTO.dart';
-import 'package:pet_finder/presentation/AnimalCard.dart';
-import 'package:pet_finder/presentation/NavDrawer.dart';
+import 'package:pet_finder/presentation/components/AnimalCard.dart';
+import 'package:pet_finder/presentation/components/NavDrawer.dart';
 
 class AnimalListScreen extends StatefulWidget {
   final String title;

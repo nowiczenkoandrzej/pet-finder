@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pet_finder/data/AnimalResponse.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pet_finder/data/OrganizationResponse.dart';
 
 String? access_token;
 
@@ -61,7 +62,8 @@ Future<AnimalsResponse> buildCall(CallDetails details) async {
   };
 
   final response = await http.get(
-    Uri.parse('https://api.petfinder.com/v2/animals?${type}page=${details.page}'),
+    Uri.parse(
+        'https://api.petfinder.com/v2/animals?${type}page=${details.page}'),
     headers: {
       'Authorization': 'Bearer $access_token',
     },
@@ -76,15 +78,34 @@ Future<AnimalsResponse> buildCall(CallDetails details) async {
   }
 }
 
+Future<OrganizationResponse> fetchOrganizations() async {
+  if (access_token == null) {
+    await getPetfinderToken();
+  }
+
+  final response = await http.get(
+    Uri.parse('https://api.petfinder.com/v2/organizations'),
+    headers: {
+      'Authorization': 'Bearer $access_token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var result = OrganizationResponse.fromJson(json.decode(response.body));
+
+    return result;
+  } else {
+    throw Exception('Failed to load organization');
+  }
+
+  
+}
+
 class CallDetails {
   final int page;
   final AnimalType type;
 
-  const CallDetails({
-    required this.page,
-    required this.type
-  });
-
+  const CallDetails({required this.page, required this.type});
 }
 
 enum AnimalType { DOG, CAT, ALL }

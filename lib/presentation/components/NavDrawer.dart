@@ -36,7 +36,9 @@ class NavDrawer extends StatelessWidget {
         title: Text('Dogs'),
       ),
       ListTile(
-        onTap: () {},
+        onTap: () {
+          context.push('/organizations');
+        },
         title: Text('Organizations'),
       ),
     ]));
