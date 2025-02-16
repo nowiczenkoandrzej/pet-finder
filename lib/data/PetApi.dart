@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:pet_finder/data/AnimalResponse.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pet_finder/data/OrganizationResponse.dart';
+import 'package:pet_finder/data/model/Organization.dart';
 
 String? access_token;
 
@@ -97,8 +98,28 @@ Future<OrganizationResponse> fetchOrganizations() async {
   } else {
     throw Exception('Failed to load organization');
   }
+}
 
-  
+Future<Organization> getOrganization(String id) async {
+  if (access_token == null) {
+    await getPetfinderToken();
+  }
+
+  final response = await http.get(
+    Uri.parse('https://api.petfinder.com/v2/organizations/$id'),
+    headers: {
+      'Authorization': 'Bearer $access_token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final jsonData = jsonDecode(response.body);
+
+    final organizationData = jsonData['organization'];
+    return Organization.fromJson(organizationData);
+  } else {
+    throw Exception('Failed to load organization');
+  }
 }
 
 class CallDetails {

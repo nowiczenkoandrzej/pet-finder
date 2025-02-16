@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import 'package:carousel_slider/carousel_controller.dart' as carousel;
+import 'package:go_router/go_router.dart';
+import 'package:pet_finder/data/PetApi.dart';
 import 'package:pet_finder/data/model/AnimalDTO.dart';
+import 'package:pet_finder/data/model/Organization.dart';
 
 class AnimalDetailScreen extends StatelessWidget {
   final AnimalDTO animal;
-  
 
-  void onFavouritePressed() {
-
-  }
+  void onFavouritePressed() {}
 
   const AnimalDetailScreen({
     Key? key,
@@ -116,13 +116,29 @@ class AnimalDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   InkWell(
-                    onTap: () {
-                      // Otwórz stronę organizacji
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content:
-                                Text('Otwieram: ${animal.organizationId}')),
-                      );
+                    onTap: () async {
+                      try {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Otwieram: ${animal.organizationId}'),
+                          ),
+                        );
+
+                        Organization organization =
+                            await getOrganization(animal.organizationId);
+
+                        if (context.mounted) {
+                          context.push('/organizationDetails',
+                              extra: organization);
+                        }
+                      } catch (e) {
+                        print(e.toString());
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Błąd: ${e.toString()}'),
+                          ),
+                        );
+                      }
                     },
                     child: Text(
                       'Organization',

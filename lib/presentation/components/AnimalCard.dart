@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pet_finder/data/model/AnimalDTO.dart';
 
-
 class AnimalLCard extends StatelessWidget {
   final AnimalDTO animal;
+  final Icon icon;
   final VoidCallback onFavouritePressed;
   final VoidCallback onTap;
 
@@ -11,16 +11,15 @@ class AnimalLCard extends StatelessWidget {
       {Key? key,
       required this.animal,
       required this.onFavouritePressed,
-      required this.onTap})
+      required this.onTap,
+      required this.icon})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? imgUrl = (animal.photos.isEmpty ||
-            animal.photos[0].small == null)
+    String? imgUrl = (animal.photos.isEmpty || animal.photos[0].small == null)
         ? null
         : animal.photos[0].small!;
-
 
     return InkWell(
         onTap: onTap,
@@ -54,7 +53,7 @@ class AnimalLCard extends StatelessWidget {
                               return _buildPlaceholder();
                             },
                           ),
-                      )
+                        )
                       : _buildPlaceholder(),
                 )),
             const SizedBox(height: 8),

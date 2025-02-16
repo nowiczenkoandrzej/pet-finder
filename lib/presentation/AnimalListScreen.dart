@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_finder/data/AnimalResponse.dart';
+import 'package:pet_finder/data/FavouriteRepository.dart';
 import 'package:pet_finder/data/PetApi.dart';
 import 'package:pet_finder/data/model/AnimalDTO.dart';
 import 'package:pet_finder/presentation/components/AnimalCard.dart';
@@ -20,6 +21,10 @@ class AnimalListScreen extends StatefulWidget {
 class _AnimalListScreen extends State<AnimalListScreen> {
   Future<AnimalsResponse>? futureAnimals;
 
+  final FavouriteRepository _favouriteRepository = FavouriteRepository();
+
+  List<int> favouriteIds = [];
+
   int currentPage = 1;
   bool isLoading = false;
   bool hasMore = true;
@@ -35,6 +40,7 @@ class _AnimalListScreen extends State<AnimalListScreen> {
       loadAnimals();
     });
 
+    //favouriteIds = await _favouriteRepository.getAllId();
     _scrollController.addListener(_onScroll);
   }
 
@@ -93,18 +99,32 @@ class _AnimalListScreen extends State<AnimalListScreen> {
             if (index < animals.length) {
               var animal = animals[index];
 
+              bool isFavorite = favouriteIds.contains(animal.id);
+
+              var icon = Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border_outlined);
+
               return AnimalLCard(
                 animal: animal,
                 onFavouritePressed: () {
-                  print(animal.name);
+                  if (isFavorite)
+                    _favouriteRepository.removeId(animal.id);
+                  else
+                    _favouriteRepository.addAnimalId(animal.id);
+                  setState(() async {
+                    favouriteIds = await _favouriteRepository.getAllId();
+                  });
                 },
                 onTap: () {
                   context.push('/details', extra: animal);
                 },
+                icon: icon,
               );
             } else if (hasMore) {
               return Column(children: [
-                SizedBox(height: 60,),
+                SizedBox(
+                  height: 60,
+                ),
                 CircularProgressIndicator(),
                 SizedBox(
                   height: 60,

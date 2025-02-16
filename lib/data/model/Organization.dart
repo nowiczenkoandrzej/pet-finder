@@ -24,22 +24,22 @@ class Organization {
   Organization({
     required this.id,
     required this.name,
-    required this.email,
-    required this.phone,
+    this.email,
+    this.phone,
     required this.address,
     required this.hours,
-    required this.url,
+    this.url,
     this.website,
     this.missionStatement,
-    required this.adoption,
+    this.adoption,
     required this.socialMedia,
     required this.photos,
-    required this.distance,
-    required this.links,
+    this.distance,
+    this.links,
   });
 
   factory Organization.fromJson(Map<String, dynamic> json) {
-    var photoList = json['photos'] as List;
+    var photoList = json['photos'] as List? ?? []; 
     List<Photo> photosList = photoList.map((i) => Photo.fromJson(i)).toList();
 
     return Organization(
@@ -52,11 +52,12 @@ class Organization {
       url: json['url'],
       website: json['website'],
       missionStatement: json['mission_statement'],
-      adoption: Adoption.fromJson(json['adoption']),
+      adoption:
+          json['adoption'] != null ? Adoption.fromJson(json['adoption']) : null,
       socialMedia: SocialMedia.fromJson(json['social_media']),
       photos: photosList,
       distance: json['distance'],
-      links: Links.fromJson(json['_links']),
+      links: json['_links'] != null ? Links.fromJson(json['_links']) : null,
     );
   }
 }
