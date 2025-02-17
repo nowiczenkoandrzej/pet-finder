@@ -55,12 +55,21 @@ Future<AnimalsResponse> buildCall(CallDetails details) async {
     await getPetfinderToken();
   }
 
-  final type = switch (details.type) {
-    AnimalType.ALL => '',
-    AnimalType.CAT => 'type=cat&',
-    AnimalType.DOG => 'type=dog&',
-    _ => ''
-  };
+  String type;
+  switch (details.type) {
+    case AnimalType.ALL:
+      type = '';
+      break;
+    case AnimalType.CAT:
+      type = 'type=cat&';
+      break;
+    case AnimalType.DOG:
+      type = 'type=dog&';
+      break;
+    default:
+      type = '';
+      break;
+  }
 
   final response = await http.get(
     Uri.parse(

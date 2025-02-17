@@ -1,7 +1,20 @@
+import 'package:hive/hive.dart';
+import 'package:hive_generator/hive_generator.dart';
+
+part 'photos.g.dart';
+
+@HiveType(typeId: 2)
 class Photo {
+  @HiveField(0)
   final String? small;
+
+  @HiveField(1)
   final String? medium;
+
+  @HiveField(2)
   final String? large;
+
+  @HiveField(3)
   final String? full;
 
   Photo({

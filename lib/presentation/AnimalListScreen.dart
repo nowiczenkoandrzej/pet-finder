@@ -6,6 +6,8 @@ import 'package:pet_finder/data/PetApi.dart';
 import 'package:pet_finder/data/model/AnimalDTO.dart';
 import 'package:pet_finder/presentation/components/AnimalCard.dart';
 import 'package:pet_finder/presentation/components/NavDrawer.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class AnimalListScreen extends StatefulWidget {
   final String title;
@@ -23,7 +25,8 @@ class _AnimalListScreen extends State<AnimalListScreen> {
 
   final FavouriteRepository _favouriteRepository = FavouriteRepository();
 
-  List<int> favouriteIds = [];
+  List<AnimalDTO> favourites = [];
+  final String boxName = "animalBox";
 
   int currentPage = 1;
   bool isLoading = false;
@@ -92,48 +95,60 @@ class _AnimalListScreen extends State<AnimalListScreen> {
           title: Text(widget.title),
         ),
         drawer: NavDrawer(),
-        body: ListView.builder(
-          controller: _scrollController,
-          itemCount: animals.length + 1,
-          itemBuilder: (context, index) {
-            if (index < animals.length) {
-              var animal = animals[index];
+        body: ValueListenableBuilder(
+            valueListenable: _favouriteRepository.getListenableBox(),
+            builder: (context, Box<AnimalDTO> box, _) {
+              final favourites = box.values.toList();
+              return ListView.builder(
+                controller: _scrollController,
+                itemCount: animals.length + 1,
+                itemBuilder: (context, index) {
+                  if (index < animals.length) {
+                    var animal = animals[index];
 
-              bool isFavorite = favouriteIds.contains(animal.id);
+                    bool isFavorite = favourites.contains(animal);
 
-              var icon = Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border_outlined);
+                    var icon = Icon(isFavorite
+                        ? Icons.favorite
+                        : Icons.favorite_border_outlined);
 
-              return AnimalLCard(
-                animal: animal,
-                onFavouritePressed: () {
-                  if (isFavorite)
-                    _favouriteRepository.removeId(animal.id);
-                  else
-                    _favouriteRepository.addAnimalId(animal.id);
-                  setState(() async {
-                    favouriteIds = await _favouriteRepository.getAllId();
-                  });
+                    return AnimalLCard(
+                      animal: animal,
+                      onFavouritePressed: () {
+                        if (isFavorite) { 
+                          _favouriteRepository.removeAnimal(animal.id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Removed from favourites')),
+                          );
+                        } else {
+                          _favouriteRepository.addAnimal(animal);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Added to favourites')),
+                          );
+                        }
+                      },
+                      onTap: () {
+                        context.push('/details', extra: animal);
+                      },
+                      icon: icon,
+                    );
+                  } else if (hasMore) {
+                    return Column(children: [
+                      SizedBox(
+                        height: 60,
+                      ),
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 60,
+                      ),
+                    ]);
+                  } else {
+                    return SizedBox();
+                  }
                 },
-                onTap: () {
-                  context.push('/details', extra: animal);
-                },
-                icon: icon,
               );
-            } else if (hasMore) {
-              return Column(children: [
-                SizedBox(
-                  height: 60,
-                ),
-                CircularProgressIndicator(),
-                SizedBox(
-                  height: 60,
-                ),
-              ]);
-            } else {
-              return SizedBox();
-            }
-          },
-        ));
+            }));
   }
 }

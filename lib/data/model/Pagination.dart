@@ -1,18 +1,16 @@
-import 'package:pet_finder/data/model/Links.dart';
+
 
 class Pagination {
   final int? countPerPage;
   final int? totalCount;
   final int? currentPage;
   final int? totalPages;
-  final Links? links;
 
   Pagination({
     required this.countPerPage,
     required this.totalCount,
     required this.currentPage,
     required this.totalPages,
-    required this.links,
   });
 
   factory Pagination.fromJson(Map<String, dynamic>? json) {
@@ -23,7 +21,6 @@ class Pagination {
         totalCount: null,
         currentPage: null,
         totalPages: null,
-        links: null,
       );
     }
 
@@ -32,7 +29,6 @@ class Pagination {
       totalCount: json['total_count'],
       currentPage: json['current_page'],
       totalPages: json['total_pages'],
-      links: Links.fromJson(json['_links']),
     );
   }
 }

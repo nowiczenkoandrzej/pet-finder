@@ -1,9 +1,21 @@
+import 'package:hive/hive.dart';
+import 'package:hive_generator/hive_generator.dart';
 
 
+part 'breeds.g.dart';
+
+@HiveType(typeId: 1)
 class Breeds {
+  @HiveField(0)
   final String? primary;
+
+  @HiveField(1)
   final String? secondary;
+
+  @HiveField(2)
   final bool? mixed;
+
+  @HiveField(3)
   final bool? unknown;
 
   Breeds({

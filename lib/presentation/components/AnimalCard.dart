@@ -83,12 +83,7 @@ class AnimalLCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: IconButton(
                 icon: const Icon(Icons.favorite_border),
-                onPressed: () {
-                  onFavouritePressed;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Dodano do ulubionych!')),
-                  );
-                },
+                onPressed: onFavouritePressed,
               ),
             ),
           ]),

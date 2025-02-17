@@ -11,9 +11,9 @@ import 'package:pet_finder/presentation/OrganizarionDetailScreen.dart';
 import 'package:pet_finder/presentation/OrganizationListScreen';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); 
   await Hive.initFlutter();
-  await Hive.openBox('animalBox');
-
+  await Hive.openBox<AnimalDTO>('animalBox');
   runApp(const MyApp());
 }
 
