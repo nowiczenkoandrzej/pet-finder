@@ -1,9 +1,8 @@
 import 'package:pet_finder/data/model/Breeds.dart';
 import 'package:pet_finder/data/model/Photo.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_generator/hive_generator.dart';
 
-part 'animal_dto.g.dart';
+part 'AnimalDTO.g.dart';
 
 @HiveType(typeId: 0)
 class AnimalDTO {

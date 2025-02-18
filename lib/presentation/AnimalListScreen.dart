@@ -32,7 +32,7 @@ class _AnimalListScreen extends State<AnimalListScreen> {
   bool isLoading = false;
   bool hasMore = true;
   List<AnimalDTO> animals = [];
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -110,12 +110,14 @@ class _AnimalListScreen extends State<AnimalListScreen> {
 
                     var icon = Icon(isFavorite
                         ? Icons.favorite
-                        : Icons.favorite_border_outlined);
+                        : Icons.favorite_border);
+
+                    var testIcon = Icon(Icons.favorite);
 
                     return AnimalLCard(
                       animal: animal,
                       onFavouritePressed: () {
-                        if (isFavorite) { 
+                        if (isFavorite) {
                           _favouriteRepository.removeAnimal(animal.id);
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

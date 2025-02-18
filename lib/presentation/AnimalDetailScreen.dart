@@ -12,9 +12,9 @@ class AnimalDetailScreen extends StatelessWidget {
   void onFavouritePressed() {}
 
   const AnimalDetailScreen({
-    Key? key,
+    super.key,
     required this.animal,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

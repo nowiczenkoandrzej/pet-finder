@@ -1,7 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:hive_generator/hive_generator.dart';
 
-part 'photos.g.dart';
+part 'Photo.g.dart';
 
 @HiveType(typeId: 2)
 class Photo {

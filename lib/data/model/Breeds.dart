@@ -1,8 +1,7 @@
 import 'package:hive/hive.dart';
-import 'package:hive_generator/hive_generator.dart';
 
 
-part 'breeds.g.dart';
+part 'Breeds.g.dart';
 
 @HiveType(typeId: 1)
 class Breeds {

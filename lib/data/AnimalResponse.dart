@@ -1,5 +1,4 @@
 
-
 import 'package:pet_finder/data/model/AnimalDTO.dart';
 import 'package:pet_finder/data/model/Pagination.dart';
 

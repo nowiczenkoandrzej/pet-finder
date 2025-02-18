@@ -7,11 +7,11 @@ class OrganizationCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const OrganizationCard({
-    Key? key,
+    super.key,
     required this.organization,
     required this.onFavouritePressed,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

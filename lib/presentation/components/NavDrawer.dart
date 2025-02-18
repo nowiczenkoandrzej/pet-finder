@@ -15,7 +15,7 @@ class NavDrawer extends StatelessWidget {
       ),
       ListTile(
         onTap: () {
-          //context.push('/');
+          context.push('/favourites');
         },
         title: Text('Favourites'),
       ),

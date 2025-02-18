@@ -8,12 +8,11 @@ class AnimalLCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const AnimalLCard(
-      {Key? key,
+      {super.key,
       required this.animal,
       required this.onFavouritePressed,
       required this.onTap,
-      required this.icon})
-      : super(key: key);
+      required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,7 @@ class AnimalLCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                icon: const Icon(Icons.favorite_border),
+                icon: icon,
                 onPressed: onFavouritePressed,
               ),
             ),

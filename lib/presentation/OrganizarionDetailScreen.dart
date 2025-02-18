@@ -7,8 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 class OrganizationDetailScreen extends StatelessWidget {
   final Organization organization;
 
-  const OrganizationDetailScreen({Key? key, required this.organization})
-      : super(key: key);
+  const OrganizationDetailScreen({super.key, required this.organization});
 
   @override
   Widget build(BuildContext context) {

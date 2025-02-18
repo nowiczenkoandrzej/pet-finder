@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pet_finder/data/PetApi.dart';
 import 'package:pet_finder/data/model/AnimalDTO.dart';
+import 'package:pet_finder/data/model/Breeds.dart';
 import 'package:pet_finder/data/model/Organization.dart';
+import 'package:pet_finder/data/model/Photo.dart';
 import 'package:pet_finder/presentation/AnimalListScreen.dart';
 import 'package:pet_finder/presentation/AnimalDetailScreen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pet_finder/presentation/FavouriteListScreen.dart';
 import 'package:pet_finder/presentation/OrganizarionDetailScreen.dart';
 import 'package:pet_finder/presentation/OrganizationListScreen';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(AnimalDTOAdapter());
+  Hive.registerAdapter(BreedsAdapter());
+  Hive.registerAdapter(PhotoAdapter());
   await Hive.openBox<AnimalDTO>('animalBox');
   runApp(const MyApp());
 }
@@ -46,14 +51,17 @@ final router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/organizations',
-      builder: (context, state) => OrganizationListScreen()
+        path: '/organizations',
+        builder: (context, state) => OrganizationListScreen()
     ),
     GoRoute(
-      path: '/organizationDetails',
-      builder: (context, state) => OrganizationDetailScreen(
-        organization: state.extra as Organization
-      )
+        path: '/organizationDetails',
+        builder: (context, state) =>
+            OrganizationDetailScreen(organization: state.extra as Organization)
+    ),
+    GoRoute(
+        path: '/favourites',
+        builder: (context, state) => Favouritelistscreen()
     )
   ],
 );
